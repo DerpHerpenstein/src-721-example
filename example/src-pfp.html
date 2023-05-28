@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        // An example JSON collection asset. This will be retrieved from an on chain CP asset, for now its just hard coded here for demonstration
+        let collectionObject = {
+                "p": "src-pfp",
+                "v": 1,
+                "op": "deploy",
+                "name": "Avime",
+                "symbol": "AVIME",
+                "description": "Customizable anime-inspired nft avatars",
+                "unique": true,
+                "type": "data:image/png;base64",
+                "image-rendering":"pixelated",
+                "viewbox": "0 0 160 160",
+                "max": 2500,
+                "lim": 1,
+                "t0": ["A12430899936789156000", "A9676658320305385000","A18077510075916032000","A11658634656299940000","A5392423398013345000","A1286945691943942000","A15242004153027440000","A17108445705962965000","A10556754146192531000","A11749646823701480000","A12600406384925133000"],
+                "t1": ["A17140023175661332000", "A6689685157378600000","A3418884499731335700","A11672876643501095000","A5533675972296429000","A17080283244856010000","A10927650103995472000"],
+                "t2": ["A13944585708475222000", "A9631360418607892000", "A5181192779538433000","A7454659328379726000","A11225806742289416000","A1542672530666754600","A7771856189723318000","A3760692267324606000","A7846703129251960000","A5130537369766429000"],
+                "t3": ["A12240402677681132000", "A4332886198473102000", "A9877675262615181000","A1788645000344962300","A15679864019683992000","A10073452441600936000","A376542987535763200","A16263173295437441000","A6438258997052070000","A5094662658387003000"],
+                "t4": ["A11153414078424633000", "A12092224695250178000","A6900693301311812000","A13854922592080636000","A15350827649761346000","A3108216070475997000","A14679726910106778000","A17521946899717366000","A10010915897353440000"],
+                "t5": ["A2991385850656806000", "A4706273261479619000", "A12259525239841251000", "A6637199522972696000", "A5436809903081015000", "A17875782000404392000", "A8243253424678198000", "A5660289847458725000", "A2413123771027491300", "A7790634082518617000"]
+        }
+
+        // An example JSON mint asset
+        let nftObject = {
+            "p": "src-pfp",
+            "op": "mint",
+            "symbol": "AVIME",
+            "ts":[0,0,0,0,0,0]
+        }
+
+        // fetches an asset and returns the base64 after stamp:
+        async function fetchAssetImage(assetName){
+            try{
+                let response = await fetch("https://xchain.io/api/asset/" + assetName);
+                let assetJSON = await response.json();
+                let stampString = assetJSON.description.slice(0,6).toLowerCase();
+            if(stampString === "stamp:")
+                return assetJSON.description.slice(6);
+            }
+            catch(e){
+                throw new Error("Unable to load asset \"" + assetName + "\"");
+            }
+        }
+
+        // pass a collection object and returns a new object with all the same fields plus the base64 img strings
+        async function fetchCollection(tmpCollectionObject){
+            let outputObject= JSON.parse(JSON.stringify(tmpCollectionObject));
+            for(let i=0; i<10; i++){
+                if(outputObject["t"+i]){
+                    outputObject["t"+i+"-img"] = [];
+                    for(let j=0; j<outputObject["t"+i].length; j++){
+                        outputObject["t"+i+"-img"].push(undefined);
+                        document.getElementById("avimeCollection").innerHTML = `--- Loading t[${i}][${j}]`;
+                        let assetName = outputObject["t"+i][j];
+                        try{
+                            outputObject["t"+i+"-img"][j] = await fetchAssetImage(assetName);
+                        }
+                        catch(e){
+                            throw new Error("Unable to load t" + i +"[" + j + "]");
+                        }
+                    }
+                }
+            }
+            document.getElementById("avimeCollection").innerHTML = JSON.stringify(tmpCollectionObject);
+            return outputObject;
+        }
+
+        function getStackedSVG(tmpNftObject,tmpCollectionObject){
+
+            let svg = `<div><svg viewbox ="${tmpCollectionObject.viewbox}" style="image-rendering:${tmpCollectionObject["image-rendering"]}">`
+            for(let i=0; i< tmpNftObject.ts.length; i++){
+                svg += `<image href="${tmpCollectionObject.type}, ${tmpCollectionObject["t" + i + "-img"][tmpNftObject.ts[i]]}"></image>`;
+            }
+            svg += "</svg></div>";
+            return svg;
+        }
+
+        function htmlToElement(html) {
+            var template = document.createElement('template');
+            html = html.trim();
+            template.innerHTML = html;
+            return template.content.firstChild;
+        }
+
+        function drawStackedSVG(tmpNftObject,tmpCollectionObject){
+            let tmpSVG = getStackedSVG(tmpNftObject,tmpCollectionObject);
+            let pfpElement = htmlToElement(tmpSVG);
+            document.body.appendChild(pfpElement);
+        }
+
+        async function getUpdateCollectionObject(){
+            var tmpButton = document.getElementById('loadAvimeButton');
+            tmpButton.disabled = true;
+
+            collectionObject = await fetchCollection(collectionObject);
+            alert("Successfully loaded Avime from xchain");
+            
+            tmpButton = document.getElementById('viewTraitsButton');
+            tmpButton.disabled  = false;
+        }
+
+        async function drawAvime(){
+            console.log("here");
+            let formData = new FormData(document.getElementById("drawAvime"));
+            let mintData = formData.get("traits");
+            let avimeMintJSON = {
+                "p": "src-pfp",
+                "op": "mint",
+                "symbol": "AVIME",
+                "ts": JSON.parse(mintData)
+            }
+
+            // ensure trait lengths are correct
+            let tmpLength = 0;
+            for(let i=0; i<10; i++){
+                if(collectionObject["t" + i])
+                    tmpLength = i+1;
+            }
+            console.log(JSON.stringify(avimeMintJSON));
+            if(avimeMintJSON.ts.length != tmpLength){
+                document.getElementById("avimeMint").innerHTML = "Error: Trait length mismatch, expected " + tmpLength + " got " + avimeMintJSON.ts.length;
+                document.getElementById("avimeImage").innerHTML = "";
+            }
+            else{
+                document.getElementById("avimeMint").innerHTML = JSON.stringify(avimeMintJSON);
+                document.getElementById("avimeImage").innerHTML = getStackedSVG(avimeMintJSON, collectionObject);
+            }
+ 
+        }
+
+    </script>
+</head>
+
+<body>
+    This demo will use the xchain api to retrieve Avime stamps <br>and stack them up per the src-pfp specification
+    <hr>
+    <button id="loadAvimeButton" onclick="getUpdateCollectionObject()">Load Avime Collection</button>
+    <hr>
+    <div id="avimeCollection"></div>
+    <hr>
+    <form id="drawAvime" action="javascript:drawAvime()">
+        <label for="traits">Traits</label>
+        <input type="text" id="traits" name="traits" value="[0,1,2,3,4,5]"><br><br>
+        <input id="viewTraitsButton" type="submit" disabled value="Example Mint/View Avime by traits">
+    </form>
+    <hr>
+    <div id="avimeMint"></div>
+    <div id="avimeImage" style="width: 320px;"></div>
+    <hr>
+</body>
+
+</html>
