@@ -1,8 +1,6 @@
 # SRC-PFP Composable Profile Picture Specification
 
-Please note: SRC-PFP is a bleeding edge specification. 
-
-In order to provide a high quality vibrant visuals to stamps, a specification is needed that can 
+Stamps are very expensive and there needs to be an inexpensive way for users to mint PFPs.  SRC-PFP specifies how to store all the art for a given collection as layers and have the user mint a small JSON file referencing data that was already stored on chain, in order to create a PFP from the aformentioned layers. By storing the layers individually it is possible to significantly reduce file size by using techniques like indexed color pallets for each layer.  Additionally, all the data needed to store 
 
 ## Introduction
 
@@ -24,8 +22,8 @@ SRC-PFP transactions must conform to these **required** fields or a Bitcoin Stam
         "viewbox": "0 0 160 160",       // viewbox to properly see  traits t0-tx
         "max": 2500,                    // maximum number of mints
         "lim": 1,                       // limit per mint
-        "t0": ["A12430899936789156000", "A9676658320305385000"],    // up to x layers of traits containing transparency
-        "t1": ["A17140023175661332000", "A6689685157378600000"],    // can be stacked on top of eachother to form a final image
+        "t0": ["A12430899936789156000", "A9676658320305385000"],    // up to x layers of stamp traits (references by CP asset#) containing
+        "t1": ["A17140023175661332000", "A6689685157378600000"],    // transparency can be stacked on top of eachother to form a final image
         ...
         "tx": ["A12240402677681132000", "A4332886198473102000"]
 }
@@ -39,6 +37,17 @@ SRC-PFP transactions must conform to these **required** fields or a Bitcoin Stam
     "ts":[0,1,...,y]    // an array with x length wherein each item
                         // represents the index of the trait to use
                         // from the deploy mechanism
+}
+```
+
+### MINT a single item (not part of a collection)
+```
+{
+    "p": "src-pfp",
+    "op": "mint",
+    "symbol": "",
+    "ts":[0,1,...,y]    // an array with x length wherein each item
+                        // represents the CP asset ID 
 }
 ```
 ### TRANSFER and USE
