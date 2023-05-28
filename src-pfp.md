@@ -46,7 +46,8 @@ SRC-PFP transactions must conform to these **required** fields or a Bitcoin Stam
     "p": "src-pfp",
     "op": "mint",
     "symbol": "",
-    "ts":[0,1,...,y]    // an array with x length wherein each item
+    "ts":["A12430899936789156000", .., "A17140023175661332000"]    
+                        // an array with x length wherein each item
                         // represents the CP asset ID 
 }
 ```
