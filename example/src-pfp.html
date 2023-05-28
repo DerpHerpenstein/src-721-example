@@ -76,6 +76,8 @@
             for(let i=0; i< tmpNftObject.ts.length; i++){
                 svg += `<image href="${tmpCollectionObject.type}, ${tmpCollectionObject["t" + i + "-img"][tmpNftObject.ts[i]]}"></image>`;
             }
+            svg += `<image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgAQMAAACxAfVuAAAABlBMVEUAAADo6NryN3r5AAAAAXRSTlMAQObYZgAAANpJREFUSMfll7EJwzAQRQUuVGqD3CbRWqkcXLn0CFnFwQNkhFxI4fZCGgUOK8FgXOgKgUBBtspXnHic+OgrLxwZOm/Hz2Rvr8l27+l8ebIH5WoYiG2LDO2DrRlcbRQdTYMn0OhMhe6gG/rBXgWnSoUYQq0ohEa5EEIqJOl23JiRuDhdzOLEmZjHqCrbqE8yKkZTmpnPiP66ONqDkUkzkjUzGOVNRVBYcs7Hahb+D5FTcQ9GW3yKiZoYmyHFGMXDtWLAXDGuVJuljHTIdi0jPNeW832pLSN7iG89XxpiJLjTLPn5AAAAAElFTkSuQmCC"`;
+
             svg += "</svg></div>";
             return svg;
         }
