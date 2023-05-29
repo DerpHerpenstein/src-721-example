@@ -74,7 +74,7 @@
 
         function getStackedSVG(tmpNftObject,tmpCollectionObject){
 
-            let svg = `<div><svg viewbox ="${tmpCollectionObject.viewbox}" style="image-rendering:${tmpCollectionObject["image-rendering"]}">`
+            let svg = `<div><svg xmlns="http://www.w3.org/2000/svg" viewbox ="${tmpCollectionObject.viewbox}" style="image-rendering:${tmpCollectionObject["image-rendering"]}">`
             for(let i=0; i< tmpNftObject.ts.length; i++){
                 svg += `<image href="${tmpCollectionObject.type}, ${tmpCollectionObject["t" + i + "-img"][tmpNftObject.ts[i]]}"></image>`;
             }
@@ -95,6 +95,16 @@
             document.body.appendChild(pfpElement);
         }
 
+        function getDrawOnCanvas(tmpNftObject,tmpCollectionObject){
+            let tmpSVG = getStackedSVG(tmpNftObject,tmpCollectionObject);
+            let tmpElement = htmlToElement(tmpSVG);
+            let pfpElement= htmlToElement(tmpElement.innerHTML);
+            let {width, height} = pfpElement.getBBox(); 
+            let image = new Image();
+            image.src = "data:image/svg+xml;base64," + btoa(pfpElement.outerHTML);
+            return image;
+        }
+
         async function getUpdateCollectionObject(){
             var tmpButton = document.getElementById('loadAvimeButton');
             tmpButton.disabled = true;
@@ -107,7 +117,6 @@
         }
 
         async function drawAvime(){
-            console.log("here");
             let formData = new FormData(document.getElementById("drawAvime"));
             let mintData = formData.get("traits");
             let avimeMintJSON = {
@@ -130,7 +139,7 @@
             }
             else{
                 document.getElementById("avimeMint").innerHTML = JSON.stringify(avimeMintJSON);
-                document.getElementById("avimeImage").innerHTML = getStackedSVG(avimeMintJSON, collectionObject);
+                document.getElementById("avimeImage").innerHTML = getDrawOnCanvas(avimeMintJSON, collectionObject).outerHTML;
             }
  
         }
