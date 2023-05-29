@@ -22,6 +22,7 @@ SRC-PFP transactions must conform to these **required** fields or a Bitcoin Stam
         "viewbox": "0 0 160 160",       // viewbox to properly see  traits t0-tx
         "max": 2500,                    // maximum number of mints
         "lim": 1,                       // limit per mint
+        "icon": "A16308540544056654000",// CP asset for a collection icon 
         "t0": ["A12430899936789156000", "A9676658320305385000"],    // up to x layers of stamp traits (references by CP asset#) containing
         "t1": ["A17140023175661332000", "A6689685157378600000"],    // transparency can be stacked on top of eachother to form a final image
         ...
