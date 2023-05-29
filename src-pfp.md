@@ -1,15 +1,15 @@
-# SRC-PFP Composable Profile Picture Specification
+# SRC-721 Composable Profile Picture Specification
 
-Stamps are very expensive and there needs to be an inexpensive way for users to mint PFPs.  SRC-PFP specifies how to store all the art for a given collection as layers and have the user mint a small JSON file referencing data that was already stored on chain, in order to create a PFP from the aformentioned layers. By storing the layers individually it is possible to significantly reduce file size by using techniques like indexed color pallets for each layer.  Additionally, all the data needed to store 
+Stamps are very expensive and there needs to be an inexpensive way for users to mint PFPs.  SRC-721 specifies how to store all the art for a given collection as layers and have the user mint a small JSON file referencing data that was already stored on chain, in order to create a PFP from the aformentioned layers. By storing the layers individually it is possible to significantly reduce file size by using techniques like indexed color pallets for each layer.  Additionally, all the data needed to store 
 
 ## Introduction
 
-SRC-PFP transactions must conform to these **required** fields or a Bitcoin Stamp Number will not be created, the transaction will not be considered a valid SRC-PFP transaction, and they will not appear in the Bitcoin Stamps Protocol index / API. Fields labeled optional can be omitted.
+SRC-721 transactions must conform to these **required** fields or a Bitcoin Stamp Number will not be created, the transaction will not be considered a valid SRC-721 transaction, and they will not appear in the Bitcoin Stamps Protocol index / API. Fields labeled optional can be omitted.
 
 ### DEPLOY
 ```
 {
-        "p": "src-pfp",
+        "p": "src-721",
         "v": 1,
         "op": "deploy",
         "name": "Collection Name",      // The display name of the collection
@@ -23,18 +23,40 @@ SRC-PFP transactions must conform to these **required** fields or a Bitcoin Stam
         "max": 2500,                    // maximum number of mints
         "lim": 1,                       // limit per mint
         "icon": "A16308540544056654000",// CP asset for a collection icon 
+        // All t0-tx are optional if the reveal op is planned to be used
+        "pubkey": "a1b2...e8d9"         // pubkey for future ops such as reveal [optional]
         "t0": ["A12430899936789156000", "A9676658320305385000"],    // up to x layers of stamp traits (references by CP asset#) containing
         "t1": ["A17140023175661332000", "A6689685157378600000"],    // transparency can be stacked on top of eachother to form a final image
         ...
         "tx": ["A12240402677681132000", "A4332886198473102000"]
 }
 ```
+
+### Reveal
+```
+{
+    "p": "src-721",
+    "v": 1,
+    "op": "reveal",
+    "symbol": "SYM",
+    "sig": "a1b2...e8d9",   // signed hash of data object containing references to traits
+    "data":{
+        "t0": ["A12430899936789156000", "A9676658320305385000"],    // up to x layers of stamp traits (references by CP asset#) containing
+        "t1": ["A17140023175661332000", "A6689685157378600000"],    // transparency can be stacked on top of eachother to form a final image
+        ...
+        "tx": ["A12240402677681132000", "A4332886198473102000"]
+    }
+}
+```
+
+
 ### MINT
 ```
 {
-    "p": "src-pfp",
+    "p": "src-721",
     "op": "mint",
     "symbol": "SYM",
+    "proof": "",        // merkle proof, used for a permissioned mint [optional]
     "ts":[0,1,...,y]    // an array with x length wherein each item
                         // represents the index of the trait to use
                         // from the deploy mechanism
@@ -44,7 +66,7 @@ SRC-PFP transactions must conform to these **required** fields or a Bitcoin Stam
 ### MINT a single item (not part of a collection)
 ```
 {
-    "p": "src-pfp",
+    "p": "src-721",
     "op": "mint",
     "symbol": "",
     "ts":["A12430899936789156000", .., "A17140023175661332000"]    
@@ -54,9 +76,9 @@ SRC-PFP transactions must conform to these **required** fields or a Bitcoin Stam
 ```
 ### TRANSFER and USE
 
-SRC-PFP transactions are valid counterparty assets and can be use as such.
+SRC-721 transactions are valid counterparty assets and can be use as such.
 
-## SRC-PFP Token Requirements
+## SRC-721 Token Requirements
 
 1. Tokens must be 1-5 characters in length.
 2. Allowed characters:
@@ -78,7 +100,7 @@ SRC-PFP transactions are valid counterparty assets and can be use as such.
     - json strings are not case sensitive
 
 
-**INVALID** tokens will not be created in the Bitcoin Stamps Protocol index or API, and the transaction will not be considered a valid SRC-PFP transaction. Any further modifications to the standard must be designed around backwards compatibility.
+**INVALID** tokens will not be created in the Bitcoin Stamps Protocol index or API, and the transaction will not be considered a valid SRC-721 transaction. Any further modifications to the standard must be designed around backwards compatibility.
 
 
 ## Allowed Unicode Chars
