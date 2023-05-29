@@ -114,7 +114,7 @@ Emoji_Modifier: This property contains characters that can be used to modify the
 
 ## Excluded Unicode Chars
 
-These chars are excluded from the allowed chars list because they are not printable, and are not allowed in the tick field. Tokens with these chars will not be created in Bitcoin Stamps Protocol index or API, and the transaction will not be considered a valid SRC-20 transaction.
+These chars are excluded from the allowed chars list because they are not printable, and are not allowed in any field. Tokens with these chars will not be created in Bitcoin Stamps Protocol index or API, and the transaction will not be considered a valid SRC-721 transaction.
 
 Emoji_Component: Characters that are used to create more complex emojis, such as skin tone modifiers and hair components. These characters are not emojis on their own but can be used with other emojis.
 
