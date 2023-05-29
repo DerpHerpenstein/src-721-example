@@ -5,7 +5,7 @@
     <script>
         // An example JSON collection asset. This will be retrieved from an on chain CP asset, for now its just hard coded here for demonstration
         let collectionObject = {
-                "p": "src-pfp",
+                "p": "src-721",
                 "v": 1,
                 "op": "deploy",
                 "name": "Avime",
@@ -29,7 +29,7 @@
 
         // An example JSON mint asset
         let nftObject = {
-            "p": "src-pfp",
+            "p": "src-721",
             "op": "mint",
             "symbol": "AVIME",
             "ts":[0,0,0,0,0,0,0]
@@ -111,7 +111,7 @@
             let formData = new FormData(document.getElementById("drawAvime"));
             let mintData = formData.get("traits");
             let avimeMintJSON = {
-                "p": "src-pfp",
+                "p": "src-721",
                 "op": "mint",
                 "symbol": "AVIME",
                 "ts": JSON.parse(mintData)
@@ -139,7 +139,7 @@
 </head>
 
 <body>
-    This demo will use the xchain api to retrieve Avime stamps <br>and stack them up per the src-pfp specification
+    This demo will use the xchain api to retrieve Avime stamps <br>and stack them up per the src-721 specification
     <hr>
     <button id="loadAvimeButton" onclick="getUpdateCollectionObject()">Load Avime Collection</button>
     <hr>
