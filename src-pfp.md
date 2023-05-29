@@ -4,7 +4,7 @@ Stamps are very expensive and there needs to be an inexpensive way for users to 
 
 ## Introduction
 
-SRC-721 transactions must conform to these **required** fields or a Bitcoin Stamp Number will not be created, the transaction will not be considered a valid SRC-721 transaction, and they will not appear in the Bitcoin Stamps Protocol index / API. Fields labeled optional can be omitted.
+SRC-721 transactions must conform to these **required** fields or the transaction will not be considered a valid SRC-721 transaction. Fields labeled optional can be omitted when not used.
 
 ### DEPLOY
 ```
