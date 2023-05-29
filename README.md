@@ -1,6 +1,6 @@
-# SRC-721 Composable Profile Picture Specification
+# SRC-721 Composable NFT Specification
 
-Stamps are very expensive and there needs to be an inexpensive way for users to mint PFPs.  SRC-721 specifies how to store all the art for a given collection as layers and have the user mint a small JSON file referencing data that was already stored on chain, in order to create a PFP from the aformentioned layers. By storing the layers individually it is possible to significantly reduce file size by using techniques like indexed color pallets for each layer.  Additionally, all the data needed to store 
+Stamps are very expensive and there needs to be an inexpensive way for users to mint good resolution composable NFTs (like 10k pfp projects).  SRC-721 specifies how to store all the art for a given collection as layers using the STAMPS protocol and have the user mint a small JSON file referencing data that was already stored on chain, in order to create an NFT composed from the aformentioned layers. By storing the layers individually it is possible to significantly reduce file size by using techniques like indexed color pallets for each layer.  By stacking the images up it is possible to create a high quality visually appealing final product.
 
 ## Introduction
 
