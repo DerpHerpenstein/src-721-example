@@ -275,7 +275,12 @@
                 document.getElementById('copyAvimeButton').disabled = true;
             }
             else{
-                document.getElementById("avimeMint").innerHTML = "stamp:" + btoa(JSON.stringify(avimeMintJSON));
+                let mintTxJSON = {
+                    address: formData.get("walletAddress"),
+                    data: btoa(JSON.stringify(avimeMintJSON)),
+                    satspervb: parseInt(formData.get("minerFee"))
+                }
+                document.getElementById("avimeMint").innerHTML = JSON.stringify(mintTxJSON);//"stamp:" + btoa(JSON.stringify(avimeMintJSON));
                 document.getElementById("avimeImage").innerHTML = getDrawOnCanvas(avimeMintJSON, collectionObject).outerHTML;
                 document.getElementById('copyAvimeButton').disabled = false;
             }
@@ -335,7 +340,15 @@
         <div id="avimeImage" style="width: 320px; display:block; margin:auto;"></div>
     </div>
     <form id="drawAvime" style="text-align:center;" action="javascript:drawAvime()">
+        <label for="minerFee">Miner Fee (sats/vB)</label>
+        <input type="text" id="minerFee" name="minerFee" value="70"><br>
+
+        <label for="walletAddress">Wallet Address</label>
+        <input type="text" style="width:400px;" id="walletAddress" name="walletAddress"><br>
+
         <input id="viewTraitsButton" type="submit" value="Generate Random Avime Stamp">
+
+
     </form>
 
     <form id="copyAvime" style="text-align:center;" action="javascript:copyAvimeB64()">
