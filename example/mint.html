@@ -228,6 +228,23 @@
             return Math.floor(Math.random() * length);
         }
 
+        function copyAvimeB64(){
+            var textToCopy = document.getElementById("avimeMint").innerText;
+            var myTemporaryInputElement = document.createElement("input");
+            myTemporaryInputElement.type = "text";
+            myTemporaryInputElement.value = textToCopy;
+            document.body.appendChild(myTemporaryInputElement);
+            myTemporaryInputElement.select();
+            document.execCommand("Copy");
+            document.body.removeChild(myTemporaryInputElement);
+            document.getElementById('copyAvimeButton').disabled = true;
+            document.getElementById('copyAvimeButton').value = "Copied!";
+            setTimeout(function(){
+                document.getElementById('copyAvimeButton').disabled = false;
+                document.getElementById('copyAvimeButton').value = "Copy Avime Stamp String";
+            },500);
+        }
+
         async function drawAvime(){
             let formData = new FormData(document.getElementById("drawAvime"));
             let mintData = formData.get("traits");
@@ -255,10 +272,12 @@
             if(avimeMintJSON.ts.length != tmpLength){
                 document.getElementById("avimeMint").innerHTML = "Error: Trait length mismatch, expected " + tmpLength + " got " + avimeMintJSON.ts.length;
                 document.getElementById("avimeImage").innerHTML = "";
+                document.getElementById('copyAvimeButton').disabled = true;
             }
             else{
                 document.getElementById("avimeMint").innerHTML = "stamp:" + btoa(JSON.stringify(avimeMintJSON));
                 document.getElementById("avimeImage").innerHTML = getDrawOnCanvas(avimeMintJSON, collectionObject).outerHTML;
+                document.getElementById('copyAvimeButton').disabled = false;
             }
  
         }
@@ -317,6 +336,10 @@
     </div>
     <form id="drawAvime" style="text-align:center;" action="javascript:drawAvime()">
         <input id="viewTraitsButton" type="submit" value="Generate Random Avime Stamp">
+    </form>
+
+    <form id="copyAvime" style="text-align:center;" action="javascript:copyAvimeB64()">
+        <input id="copyAvimeButton" type="submit" disabled value="Copy Avime Stamp String">
     </form>
 
         
