@@ -123,7 +123,7 @@ Extended_Pictographic: This includes additional pictographic characters not cove
 
 ## Asset verification
 
-The validity of an asset can be determined by generating a unique signature for every asset. The message comprised of the trait array and the asset id is signed by the creator's private key and then stored as a property in each asset.
+The validity of an asset can be determined by generating a unique signature for every asset. The message comprised of the **trait array** and the asset **id** is signed by the creator's private key and then stored as a property in each asset.
 
 The asset can then be easily verified by:
 
