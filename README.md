@@ -16,7 +16,7 @@ SRC-721 transactions must conform to these **required** fields or the transactio
         "symbol": "SYM",                // the symbol for the collection
         "description": "Description",
         "unique": true,                 // determines if a set of traits must be unique to be valid
-        "root": "a1b2...e8d9"           // merkle root for a permissioned mint [optional]
+        "supply": 1234,          // supply [optional]
         "type": "data:image/png;base64",// mime type of the images used in traits t0-tx
         "image-rendering":"pixelated",  // css property to ensure images are displayed properly [optional]
         "viewbox": "0 0 160 160",       // viewbox to properly see  traits t0-tx
@@ -56,7 +56,8 @@ SRC-721 transactions must conform to these **required** fields or the transactio
     "p": "src-721",
     "op": "mint",
     "symbol": "SYM",
-    "proof": "",        // merkle proof, used for a permissioned mint [optional]
+    "id": 1,
+    "sig": "",        // creator wallet signs message in the form of {ts: ts, id: id} b64 encoded
     "ts":[0,1,...,y]    // an array with x length wherein each item
                         // represents the index of the trait to use
                         // from the deploy mechanism
@@ -119,3 +120,15 @@ These chars are excluded from the allowed chars list because they are not printa
 Emoji_Component: Characters that are used to create more complex emojis, such as skin tone modifiers and hair components. These characters are not emojis on their own but can be used with other emojis.
 
 Extended_Pictographic: This includes additional pictographic characters not covered by Emoji_Presentation but can still be considered emojis.
+
+## Asset verification
+
+The validity of an asset can be determined by generating a unique signature for every asset. The message comprised of the trait array and the asset id is signed by the creator's private key and then stored as a property in each asset.
+
+The asset can then be easily verified by:
+
+```
+bitcoinMessage.verify(message, address, signature)  // prints true or false
+```
+
+This method will help with both **verification** and **indexing**

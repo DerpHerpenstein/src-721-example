@@ -38,7 +38,7 @@ function signArray(trait){
 let trait_arrays = [  [1,2,3,4],  [2,3,4,1],  [3,4,1,2],  [3,4,1,2],  [4,1,2,3]  ]
 
 // encode each array
-let encoded_arrays = trait_arrays.map(trait => signArray(btoa(JSON.stringify(trait))))
+let encoded_arrays = trait_arrays.map(trait => signArray(btoa(JSON.stringify(trait+"salt"))))
 
 // generate leaves
 let leaves = encoded_arrays.map(arr => keccak256(arr))
