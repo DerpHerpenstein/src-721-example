@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "bitcoinjs-lib": "^6.1.2",
+    "bitcoinjs-message": "^2.2.0",
+    "ecpair": "^2.1.0",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.3.10",
+    "tiny-secp256k1": "^2.2.2"
+  }
+}
