@@ -30,14 +30,15 @@ const parent = {
     "tx": ["A12240402677681132000", "A4332886198473102000"]
 }
 
-const tokens = [
+var tokens = [
     {
         "p": "src-721",
         "op": "mint",
         "symbol": "SYM",
         "proof": "", 
         "ts":[1,2,3,4],
-        "id": 1
+        "id": 1,
+        "sig": undefined
     },
     {
         "p": "src-721",
@@ -45,7 +46,8 @@ const tokens = [
         "symbol": "SYM",
         "proof": "", 
         "ts":[2,3,4,1],
-        "id": 2
+        "id": 2,
+        "sig": undefined
     },
     {
         "p": "src-721",
@@ -53,7 +55,8 @@ const tokens = [
         "symbol": "SYM",
         "proof": "", 
         "ts":[3,4,1,2],
-        "id": 3
+        "id": 3,
+        "sig": undefined
     },
     {
         "p": "src-721",
@@ -61,7 +64,8 @@ const tokens = [
         "symbol": "SYM",
         "proof": "", 
         "ts":[4,1,2,3],
-        "id": 4
+        "id": 4,
+        "sig": undefined
     },
     
 
@@ -91,16 +95,18 @@ function signArray(trait){
     return(signature.toString("base64"))
 }
 
+let final_tokens = tokens.map(trait => 
+    {    
+        trait.sig = signArray(btoa(JSON.stringify({ts: trait.ts, id: trait.id})))
+        return(trait)
+    }
+)
 
-// encode each array
-let signatures = tokens.map(trait => signArray(btoa(JSON.stringify({ts: trait.ts, id: trait.id}))))
-
-console.log(signatures)
-
+console.log(final_tokens)
 
 
 // prove that the trait is signed by the creator
-var signature = signatures[0]
+var signature = final_tokens[0].sig
 var message = btoa(JSON.stringify({ts: tokens[0].ts, id: tokens[0].id}))
 
 // should return true
